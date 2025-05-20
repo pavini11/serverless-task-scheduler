@@ -1,0 +1,5 @@
+Copyright (c) 2025 pavini11
+
+This code is provided solely for the purpose of evaluating my technical skills
+as part of a job application. Reuse, reproduction, or distribution of this
+code, in whole or in part, without explicit permission is prohibited.
