@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Serverless Task Scheduler
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: python3.9
+
+Resources:
+
+  ## 1. DynamoDB Table
+  TaskTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TaskTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: task_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: task_id
+          KeyType: HASH
+
+  ## 2. Schedule Task Lambda
+  ScheduleTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: schedule_task/
+      Handler: app.lambda_handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TaskTable
+          EXECUTE_FUNCTION_ARN: !GetAtt ExecuteTaskFunction.Arn
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
+        - AmazonEventBridgeFullAccess
+        - Statement:
+            - Effect: Allow
+              Action:
+                - lambda:InvokeFunction
+              Resource: !GetAtt ExecuteTaskFunction.Arn
+      Events:
+        ScheduleApi:
+          Type: Api
+          Properties:
+            Path: /schedule-task
+            Method: post
+
+
+  ## 3. Execute Task Lambda
+  ExecuteTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: execute_task/
+      Handler: app.lambda_handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TaskTable
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
