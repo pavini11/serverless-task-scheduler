@@ -6,8 +6,7 @@ A simple, event-driven **serverless task scheduler** using **AWS Lambda**, **API
 
 ## 🧱 Architecture / Design
 
-![Architecture Diagram](architecture.png)  
-![Please click on the url to view the image: ](https://drive.google.com/file/d/1iKnWBWnCrCZwedmDTt4JlpxvZAjizsW3/view?usp=sharing)
+![Architecture Diagram](Architecture.png)  
 
 ---
 
