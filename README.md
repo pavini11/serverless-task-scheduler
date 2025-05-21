@@ -62,6 +62,7 @@ sam deploy --guided
 ## 📬 Example API Request
 
 **Endpoint:** `POST /schedule-task`
+> ⚠️ Please check if the webhook URL is still available before using, as the demo webhook might expire or become inactive.
 
 ```bash
 curl --location 'https://z81b2sjbqk.execute-api.ap-south-1.amazonaws.com/Prod/schedule-task' \
